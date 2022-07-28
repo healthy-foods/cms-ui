@@ -1,9 +1,12 @@
 import axios from "axios";
 import { GET_PRODUCT_BY_CATEGORYID_API } from "../config";
 
-const getProductByCategory = async (categoryId) => {
+const getProductByCategory = async (categoryId, page) => {
   let data;
-  let url = GET_PRODUCT_BY_CATEGORYID_API.replace("${categoryid}", categoryId);
+  let url =
+    GET_PRODUCT_BY_CATEGORYID_API.replace("${categoryid}", categoryId) +
+    "?page=" +
+    page;
   try {
     let result = await axios.get(url);
     data = result.data;

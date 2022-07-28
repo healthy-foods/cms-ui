@@ -9,6 +9,7 @@ import AddProductPopup from "./addProductPopup";
 import { toast, ToastContainer } from "react-toastify";
 import searchProductByName from "../../../api/searchProductByNameAPI";
 import EditProductPopup from "./editProductPopup";
+import Pagination from "../../../until/Pagination";
 const BarsContainer = styled.div`
   :hover {
     border-bottom: 3px solid #eb6e15 !important;
@@ -35,6 +36,8 @@ const ListProduct = () => {
   const [category, setCategory] = useState([]);
   const [productId, setProductId] = useState();
   const [productIdEdit, setProductIdEdit] = useState();
+  const [pageNumber, setPageNumber] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   //state
   const [searchKey, setSearchKey] = useState();
   const [choseBar, setChoseBar] = useState(-1);
@@ -45,6 +48,21 @@ const ListProduct = () => {
   const [openEditProduct, setOpenEditProduct] = useState(false);
   //[handle open || close modal]
   //----modal delete ---
+  const nextPage = () => {
+    if (currentPage < Math.ceil(pageNumber / 10)) {
+      setCurrentPage(++currentPage);
+    } else {
+      return;
+    }
+  };
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(--currentPage);
+    } else {
+      return;
+    }
+  };
+
   const handleCloseDelete = () => setOpenDeletePopup(false);
   const handleOpenDelete = () => setOpenDeletePopup(true);
   //----modal add ---
@@ -57,16 +75,17 @@ const ListProduct = () => {
   //page load
   useEffect(() => {
     const getAllProduct = async () => {
-      await getAllProductList()
+      await getAllProductList(currentPage)
         .then((product) => {
           setProductList(product.data);
+          setPageNumber(product.total);
         })
         .catch((error) => {
           console.error(error.message);
         });
     };
     getAllProduct();
-  }, [reload]);
+  }, [reload, currentPage]);
   useEffect(() => {
     const getCategories = async () => {
       const result = await getAllCategoryForProduct();
@@ -86,6 +105,7 @@ const ListProduct = () => {
       setProductList([]);
       let result = await getProductByCategory(id);
       setProductList(result.data);
+      setPageNumber(result.total);
     }
   };
   const handleOpenPopupDelete = (id) => {
@@ -311,6 +331,13 @@ const ListProduct = () => {
             )}
           </tbody>
         </table>
+        <Pagination
+          total={pageNumber}
+          page={currentPage}
+          setPage={setCurrentPage}
+          nextPage={nextPage}
+          prevPage={prevPage}
+        />
       </div>
       <AddProductPopup
         open={open}

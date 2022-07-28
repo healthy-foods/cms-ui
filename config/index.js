@@ -1,12 +1,14 @@
 const SERVER_API = "http://localhost:1234";
 
+// const SERVER_API = "https://greenow12.herokuapp.com";
+
 const GET_ALL_MANUFACTURE_API = SERVER_API + "/get-all-manufacture";
 const LOGIN_API = SERVER_API + "/login";
 const LOGOUT_API = SERVER_API + "/logout";
 const GET_ALL_CATEGORY_FOR_PRODUCT_API =
   SERVER_API + "/get-all-category-for-product";
 const ADD_PRODUCT_API = SERVER_API + "/add-product";
-const GET_ALL_PRODUCT_API = SERVER_API + "/get-all-product";
+const GET_ALL_PRODUCT_API = SERVER_API + "/get-all-product/${page}";
 const GET_ALL_CATEGORY_API = SERVER_API + "/get-all-category";
 const GET_ALL_STATUS_MANUFACTURE_API = SERVER_API + "/get-all-status";
 const GET_PRODUCT_BY_CATEGORYID_API =
